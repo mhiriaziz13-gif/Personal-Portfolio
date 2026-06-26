@@ -7,7 +7,7 @@ import { SiteChrome } from '@/components/site-chrome';
 import { getPortfolioContent } from '@/lib/cms';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
-const googleAnalyticsId = 'G-NXZE2F87JD';
+const googleTagId = 'G-NXZE2F87JD';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -36,13 +36,13 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <SiteChrome profile={profile}>{children}</SiteChrome>
         <SpeedInsights />
         <Analytics />
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`} strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`} strategy="afterInteractive" />
+        <Script id="google-tag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${googleAnalyticsId}');
+            gtag('config', '${googleTagId}');
           `}
         </Script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
