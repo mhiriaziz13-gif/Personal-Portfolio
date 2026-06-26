@@ -8,9 +8,9 @@ export function SiteFooter({ profile }: { profile: Profile }) {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div>
-          <p className="eyebrow">Commercial clarity, built from data.</p>
+          <p className="eyebrow">Data, automation and commercial clarity.</p>
           <h2>{profile.tagline}</h2>
-          <p className="footer-copy">A portfolio focused on data, automation and digital marketing applied to commercial performance, customer journeys and operational decisions.</p>
+          <p className="footer-copy">A portfolio focused on marketing analytics, commercial analytics, business intelligence, customer journeys and operational reliability.</p>
         </div>
         <div className="footer-links">
           <p className="footer-label">Navigate</p>
@@ -23,7 +23,7 @@ export function SiteFooter({ profile }: { profile: Profile }) {
           <Link href="/resume"><Icon name="download" /> Download CV</Link>
         </div>
       </div>
-      <div className="shell footer-base"><span>© {new Date().getFullYear()} {profile.name}</span><span>{profile.location}</span></div>
+      <div className="shell footer-base"><span>(c) {new Date().getFullYear()} {profile.name}</span><span>{profile.location}</span></div>
     </footer>
   );
 }

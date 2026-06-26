@@ -4,10 +4,10 @@ import { getAdminMessages, getAdminPortfolioContent, isCurrentUserAdmin } from '
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
 
-export const metadata = { title: 'Content Studio' };
+export const metadata = { title: 'Portfolio Manager' };
 
 export default async function AdminPage() {
-  if (!isSupabaseConfigured()) return <main className="admin-setup-screen"><p className="eyebrow">Configuration required</p><h1>Connect Supabase before using the content studio.</h1><p>Copy <code>.env.example</code> to <code>.env.local</code>, add the Supabase keys, run <code>supabase/schema.sql</code> and <code>supabase/seed.sql</code>, then restart the Next.js server.</p></main>;
+  if (!isSupabaseConfigured()) return <main className="admin-setup-screen"><p className="eyebrow">Configuration required</p><h1>Connect the content backend before using the portfolio manager.</h1><p>Add the required local environment values, run the setup SQL files, then restart the Next.js server.</p></main>;
   if (!await isCurrentUserAdmin()) redirect('/admin/login?denied=1');
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

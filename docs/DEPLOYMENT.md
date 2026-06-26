@@ -10,7 +10,7 @@ Before deploying, complete `docs/SUPABASE_SETUP.md`.
 
 1. Push the repository to GitHub.
 2. Import it in Vercel and keep the Next.js framework preset.
-3. In **Project Settings → Environment Variables**, add:
+3. In **Project Settings -> Environment Variables**, add:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `NEXT_PUBLIC_SITE_URL`
@@ -25,9 +25,9 @@ Before deploying, complete `docs/SUPABASE_SETUP.md`.
 1. Import the GitHub repository in Netlify.
 2. Build command: `npm run build`.
 3. Publish directory: `.next`.
-4. Add the same four environment variables in Netlify’s environment-variable settings. Make the secret key restricted/sensitive.
+4. Add the same four environment variables in Netlify's environment-variable settings. Make the secret key restricted/sensitive.
 5. Deploy and test both public pages and `/admin/login`.
-6. Do not add a root rewrite in `_redirects` or `netlify.toml`; it can override the Next.js adapter’s routing.
+6. Do not add a root rewrite in `_redirects` or `netlify.toml`; it can override the Next.js adapter's routing.
 
 ## Production checks
 

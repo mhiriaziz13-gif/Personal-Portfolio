@@ -7,7 +7,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/client';
 
 export default function AdminLoginPage() {
-  return <Suspense fallback={<main className="admin-login"><div className="admin-login-card"><p>Loading secure sign-in…</p></div></main>}><AdminLoginForm /></Suspense>;
+  return <Suspense fallback={<main className="admin-login"><div className="admin-login-card"><p>Loading secure sign-in...</p></div></main>}><AdminLoginForm /></Suspense>;
 }
 
 function AdminLoginForm() {
@@ -31,7 +31,7 @@ function AdminLoginForm() {
     } finally { setBusy(false); }
   }
 
-  return <main className="admin-login"><div className="admin-login-card"><Link href="/" className="admin-brand">AAM <span>Content Studio</span></Link><p className="eyebrow">Private access</p><h1>Sign in to manage the portfolio.</h1>{!configured ? <p className="admin-login-error">Supabase is not configured yet. Follow <code>docs/SUPABASE_SETUP.md</code> first.</p> : <form className="admin-form" onSubmit={submit}><Field label="Email"><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required /></Field><Field label="Password"><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required /></Field><button className="button button-primary" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button><p className="admin-login-error" aria-live="polite">{status}</p></form>}<p className="admin-login-help">Only the Supabase account added to the <code>admins</code> table can access this page.</p></div></main>;
+  return <main className="admin-login"><div className="admin-login-card"><Link href="/" className="admin-brand">AAM <span>Portfolio Manager</span></Link><p className="eyebrow">Private access</p><h1>Sign in to manage the portfolio.</h1>{!configured ? <p className="admin-login-error">Supabase is not configured yet. Follow <code>docs/SUPABASE_SETUP.md</code> first.</p> : <form className="admin-form" onSubmit={submit}><Field label="Email"><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required /></Field><Field label="Password"><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required /></Field><button className="button button-primary" type="submit" disabled={busy}>{busy ? 'Signing in...' : 'Sign in'}</button><p className="admin-login-error" aria-live="polite">{status}</p></form>}<p className="admin-login-help">Only the Supabase account added to the <code>admins</code> table can access this page.</p></div></main>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) { return <label className="admin-field"><span>{label}</span>{children}</label>; }

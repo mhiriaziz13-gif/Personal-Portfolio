@@ -254,7 +254,7 @@ code { padding: 0.13rem 0.34rem; border-radius: 4px; color: var(--ink); backgrou
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.reveal, .signal-node, .button, .project-card, .value-card, .contact-link { animation: none !important; transition: none !important; }.button:hover, .project-card:hover, .value-card:hover, .contact-link:hover { transform: none; } }
 
-/* CMS / private content studio */
+/* Private admin styles */
 .form-honeypot { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; }
 .project-cover-image { background-position: center; background-repeat: no-repeat; background-size: cover; }
 

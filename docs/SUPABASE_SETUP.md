@@ -1,4 +1,4 @@
-# Supabase setup — one time
+# Supabase setup - one time
 
 This setup creates the database, secure admin access, file storage and the contact-message inbox.
 
@@ -6,7 +6,7 @@ This setup creates the database, secure admin access, file storage and the conta
 
 Create a new Supabase project. Keep the database password stored safely; the website itself does not require that password.
 
-In **Project settings → API**, copy:
+In **Project settings -> API**, copy:
 
 - Project URL
 - Publishable key
@@ -36,11 +36,11 @@ Open **SQL Editor** in Supabase. Run these files in this exact order:
 
 `schema.sql` creates all content tables, the `portfolio-assets` storage bucket, row-level security policies and automatic `updated_at` timestamps.
 
-`seed.sql` adds the verified content that was already in the original portfolio. It intentionally does not create a login user.
+`seed.sql` adds the initial portfolio content. It intentionally does not create a login user.
 
 ## 4. Create the administrator login
 
-In **Authentication → Users**, create one user with email and password. Do not enable public sign-up for this single-owner portfolio.
+In **Authentication -> Users**, create one user with email and password. Do not enable public sign-up for this single-owner portfolio.
 
 Then open `supabase/create-admin.sql`, replace the email on the last line with the email you just created, and run that SQL in the SQL Editor.
 
@@ -56,7 +56,7 @@ npm run dev
 Open:
 
 - Public site: `http://localhost:3000`
-- CMS: `http://localhost:3000/admin/login`
+- Private manager: `http://localhost:3000/admin/login`
 
 ## 6. Verify before deployment
 
@@ -71,5 +71,5 @@ Open:
 
 - The original local data files in `data/` are fallbacks if Supabase is not configured.
 - Once Supabase is connected, public pages use the database. The SQL seed is therefore important.
-- Run `schema.sql` before `seed.sql`. Re-running `seed.sql` restores the original portfolio text and will replace CMS edits in the seeded collections.
+- Run `schema.sql` before `seed.sql`. Re-running `seed.sql` restores the seeded portfolio text and will replace private manager edits in the seeded collections.
 - To remove access, delete the user from `public.admins` or remove the Supabase Auth user.

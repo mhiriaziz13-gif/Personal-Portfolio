@@ -27,12 +27,12 @@ export function ContactForm() {
   }
 
   return <form className="contact-form" onSubmit={handleSubmit}>
-    <p className="form-note">Messages are sent securely to the portfolio owner. Please do not include confidential information.</p>
+    <p className="form-note">Share the role, project context or collaboration topic. Please avoid confidential business information.</p>
     <div className="form-row"><label htmlFor="name">Name</label><input id="name" name="name" autoComplete="name" required maxLength={120} /></div>
     <div className="form-row"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required maxLength={254} /></div>
     <div className="form-row"><label htmlFor="message">Message</label><textarea id="message" name="message" rows={6} required minLength={8} maxLength={5000} /></div>
     <div className="form-honeypot" aria-hidden="true"><label htmlFor="website">Website</label><input id="website" name="website" tabIndex={-1} autoComplete="off" /></div>
-    <button className="button button-primary" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending…' : 'Send message'}</button>
+    <button className="button button-primary" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending...' : 'Send Message'}</button>
     <p className="form-status" aria-live="polite">{status}</p>
   </form>;
 }
