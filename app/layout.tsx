@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
@@ -6,6 +7,7 @@ import { SiteChrome } from '@/components/site-chrome';
 import { getPortfolioContent } from '@/lib/cms';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+const googleAnalyticsId = 'G-NXZE2F87JD';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -34,6 +36,15 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <SiteChrome profile={profile}>{children}</SiteChrome>
         <SpeedInsights />
         <Analytics />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`} strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${googleAnalyticsId}');
+          `}
+        </Script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </body>
     </html>
