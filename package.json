@@ -1,0 +1,31 @@
+{
+  "name": "ahmed-aziz-mhiri-portfolio-cms",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build",
+    "lint": "tsc --noEmit",
+    "generate:cvs": "python3 scripts/generate_cvs.py",
+    "preview": "next start",
+    "start": "next start",
+    "dev:turbo": "next dev --turbo"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10"
+  }
+}
