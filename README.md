@@ -1,119 +1,364 @@
-# Ahmed Aziz Mhiri — Portfolio CMS
+# \# Ahmed Aziz Mhiri — Portfolio CMS
 
-A Next.js portfolio with a private Supabase-powered content dashboard. The public site presents Ahmed Aziz Mhiri’s work in Data-Driven Marketing, Commercial Analytics, Business Intelligence, Automation and Digital Growth. The `/admin` dashboard lets the owner update the profile, portrait, projects, experience, skills, education, certifications, CV files and contact messages without editing source code.
+# 
 
-## Stack
+# A professional portfolio platform designed to present projects, experience, skills, CVs, and professional positioning in \*\*Data-Driven Marketing, Commercial Analytics, Business Intelligence, Automation, and Digital Growth\*\*.
 
-- Next.js 16, React 19 and TypeScript
-- Supabase Postgres, Auth, Storage and Row Level Security
-- Next.js Server Components and Route Handlers
-- Clean CSS design tokens; no heavy UI framework or 3D dependency
-- Responsive public portfolio and private CMS dashboard
+# 
 
-## Before you run it
+# The platform combines a public-facing portfolio with a secure content management area, allowing content to be updated without modifying the source code.
 
-This is **not a static-export website anymore**. It needs a Supabase project and a host that supports Next.js server rendering, such as Vercel or Netlify.
+# 
 
-1. Use Node.js 20.9+ (Node 22 LTS recommended).
-2. Follow `docs/SUPABASE_SETUP.md` once.
-3. Copy `.env.example` to `.env.local` and add the four values.
-4. Install and run:
+# \## Profile
 
-```bash
-npm install
-npm run dev
-```
+# 
 
-Open `http://localhost:3000` for the public site and `http://localhost:3000/admin` for the private dashboard.
+# \*\*Ahmed Aziz Mhiri\*\*
 
-## Configuration
+# Sousse, Tunisia
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-SUPABASE_SECRET_KEY=YOUR_SUPABASE_SECRET_KEY
-```
+# Available for Europe-based opportunities from Summer 2027.
 
-`SUPABASE_SECRET_KEY` is used only in the server-side contact route. Never place it in a browser-exposed variable and never commit `.env.local`.
+# 
 
-## Build and production test
+# \* LinkedIn: \[ahmed-aziz-mhiri](https://www.linkedin.com/in/ahmed-aziz-mhiri/)
 
-```bash
-npm run lint
-npm run build
-npm run start
-```
+# \* Email: \[mhiriaziz13@gmail.com](mailto:mhiriaziz13@gmail.com)
 
-For a local production test, set `NEXT_PUBLIC_SITE_URL=http://localhost:3000` in `.env.local`.
+# 
 
-## Admin dashboard
+# \## Screenshots
 
-After Supabase has been configured, visit `/admin/login` and sign in with the authorised admin user. The dashboard allows you to:
+# 
 
-- Update the public profile, text and official portrait.
-- Add, edit and delete project case studies.
-- Add, edit and delete experience entries.
-- Edit contribution cards, skill clusters, education and certifications.
-- Replace CV PDFs and DOCX files through Supabase Storage.
-- Read, mark and delete contact-form messages.
+# \### Homepage
 
-All public tables are protected with Row Level Security. Visitors can only read published content; only the user listed in `public.admins` can modify content or upload assets.
+# 
 
-## Repository structure
+# !\[Homepage of Ahmed Aziz Mhiri portfolio](./screenshots/home.png)
 
-```text
-app/                 Public pages, /admin, contact API route, metadata and sitemap
-components/          Reusable public UI and CMS dashboard components
-data/                Verified fallback content for local use before Supabase is connected
-lib/                 Supabase clients, CMS data loader and content types
-supabase/            Database schema, seeded portfolio content and admin setup SQL
-public/images/       Initial portrait asset
-public/cv/           Initial CV files; replacements are managed through Storage
-scripts/             Reusable CV generator
-/docs                Setup, deployment, accessibility, performance and update guidance
-```
+# 
 
-## Deploy to Vercel
+# \### Projects
 
-1. Push this repository to GitHub.
-2. In Vercel, import the repository as a Next.js project.
-3. Add all four environment variables from `.env.example` for Production. Add them for Preview too if you need a working CMS in previews.
-4. Set `NEXT_PUBLIC_SITE_URL` to the final production URL.
-5. Keep the build command as `npm run build`. Do not specify a static `out` directory.
-6. Deploy, then test `/admin/login`, a public project page, the contact form and CV downloads.
+# 
 
-## Deploy to Netlify
+# !\[Projects page](./screenshots/projects.png)
 
-1. Push this repository to GitHub and import it in Netlify.
-2. Use build command `npm run build`.
-3. Use publish directory `.next` for the Next.js SSR adapter.
-4. Add all four environment variables in the Netlify dashboard, including `SUPABASE_SECRET_KEY` as a secret.
-5. Set `NEXT_PUBLIC_SITE_URL` to the final production URL and deploy.
-6. Do not add a root rewrite rule: Netlify’s Next.js adapter handles routing automatically.
+# 
 
-## CV generator
+# \### Administration Login
 
-The initial CV source remains reusable in `scripts/generate_cvs.py`:
+# 
 
-```bash
-python3 -m pip install python-docx
-npm run generate:cvs
-```
+# !\[Administration login page](./screenshots/admin-login.png)
 
-After regenerating files, upload each replacement in `/admin` → **CVs**. The public download centre then uses the new Storage URLs.
+# 
 
-## Included documentation
+# \### Resume and CV Download Centre
 
-- `docs/SUPABASE_SETUP.md`
-- `docs/CONTENT_UPDATE_GUIDE.md`
-- `docs/DEPLOYMENT.md`
-- `docs/ACCESSIBILITY_CHECKLIST.md`
-- `docs/PERFORMANCE_CHECKLIST.md`
-- `docs/SEO_CHECKLIST.md`
-- `docs/DESIGN_AUDIT.md`
-- `docs/MISSING_OR_UNCONFIRMED_INFORMATION.md`
+# 
 
-## Content scope
+# !\[Resume and CV download centre](./screenshots/cv-centre.png)
 
-All seeded public content is based only on the verified portfolio brief. It deliberately excludes unconfirmed metrics, personal phone details, language proficiency levels, work authorisation claims, salary expectations, street addresses and confidential client data.
+# 
+
+# \## Main Features
+
+# 
+
+# \* Responsive professional portfolio for desktop, tablet, and mobile.
+
+# \* Public pages for profile, projects, experience, skills, education, CVs, and contact.
+
+# \* Individual project case studies with business context, contributions, tools, and outcomes.
+
+# \* Secure administration area for managing portfolio content.
+
+# \* Create, edit, publish, unpublish, and delete projects.
+
+# \* Manage professional experience, skills, education, certifications, and profile information.
+
+# \* Upload and replace portrait images, project covers, CV files, and documents.
+
+# \* Download centre for English, French, ATS, and Canadian CV versions.
+
+# \* Contact form connected to an administrative inbox.
+
+# \* SEO-ready structure with metadata, sitemap, robots file, Open Graph data, and JSON-LD.
+
+# \* Accessible interface designed with keyboard navigation, visible focus states, contrast, and reduced-motion support.
+
+# 
+
+# \## Technology Stack
+
+# 
+
+# \* Next.js
+
+# \* TypeScript
+
+# \* Supabase
+
+# 
+
+# &#x20; \* PostgreSQL database
+
+# &#x20; \* Authentication
+
+# &#x20; \* Row Level Security
+
+# &#x20; \* File storage
+
+# \* Vercel or Netlify deployment
+
+# \* GitHub for source control and deployment workflow
+
+# 
+
+# \## Local Installation
+
+# 
+
+# \### Prerequisites
+
+# 
+
+# \* Node.js 20.9 or newer
+
+# \* npm
+
+# \* Supabase project
+
+# 
+
+# \### Install the project
+
+# 
+
+# ```bash
+
+# git clone https://github.com/YOUR-GITHUB-USERNAME/ahmed-aziz-mhiri-portfolio.git
+
+# cd ahmed-aziz-mhiri-portfolio
+
+# npm install
+
+# ```
+
+# 
+
+# \### Configure environment variables
+
+# 
+
+# Create a `.env.local` file at the root of the project.
+
+# 
+
+# ```env
+
+# NEXT\_PUBLIC\_SUPABASE\_URL=
+
+# NEXT\_PUBLIC\_SUPABASE\_PUBLISHABLE\_KEY=
+
+# SUPABASE\_SERVICE\_ROLE\_KEY=
+
+# ```
+
+# 
+
+# Never publish `.env.local` or any Supabase secret key on GitHub.
+
+# 
+
+# \### Start locally
+
+# 
+
+# ```bash
+
+# npm run dev
+
+# ```
+
+# 
+
+# Open:
+
+# 
+
+# ```text
+
+# http://localhost:3000
+
+# ```
+
+# 
+
+# The administration area is available at:
+
+# 
+
+# ```text
+
+# http://localhost:3000/admin/login
+
+# ```
+
+# 
+
+# \## Supabase Setup
+
+# 
+
+# Before using the administration area:
+
+# 
+
+# 1\. Create a Supabase project.
+
+# 2\. Run `supabase/schema.sql` in the Supabase SQL Editor.
+
+# 3\. Run `supabase/seed.sql` if initial content is needed.
+
+# 4\. Create the administrator account.
+
+# 5\. Run `supabase/create-admin.sql` to authorise the account.
+
+# 6\. Add the Supabase environment variables to `.env.local`.
+
+# 
+
+# Only accounts registered in the `admins` table can edit portfolio content.
+
+# 
+
+# \## Content Management
+
+# 
+
+# The administration area allows the owner to manage:
+
+# 
+
+# \* Profile information
+
+# \* Portrait image
+
+# \* Projects and case studies
+
+# \* Work experience
+
+# \* Skills
+
+# \* Education
+
+# \* Certifications
+
+# \* CV files
+
+# \* Contact messages
+
+# \* Media files
+
+# 
+
+# Portfolio visitors only see published content.
+
+# 
+
+# \## Deployment
+
+# 
+
+# \### Vercel
+
+# 
+
+# 1\. Push the repository to GitHub.
+
+# 2\. Import the repository in Vercel.
+
+# 3\. Add the Supabase environment variables in Vercel Project Settings.
+
+# 4\. Deploy.
+
+# 
+
+# \### Netlify
+
+# 
+
+# 1\. Push the repository to GitHub.
+
+# 2\. Import the repository in Netlify.
+
+# 3\. Add the Supabase environment variables in Site Configuration.
+
+# 4\. Deploy using the Next.js runtime.
+
+# 
+
+# This project requires a dynamic Next.js deployment. Do not deploy it as a static `out` export because the CMS, authentication, and contact features require server-side capabilities.
+
+# 
+
+# \## Security Notes
+
+# 
+
+# \* Never commit `.env.local`.
+
+# \* Never expose `SUPABASE\_SERVICE\_ROLE\_KEY` in client-side code.
+
+# \* Keep Supabase Row Level Security enabled.
+
+# \* Only approved administrators should have content-editing permissions.
+
+# \* Review contact messages and uploaded files regularly.
+
+# 
+
+# \## Repository Structure
+
+# 
+
+# ```text
+
+# app/          Public pages, admin routes, and server logic
+
+# components/   Reusable interface components
+
+# lib/          Supabase and utility functions
+
+# public/       Static files, images, and downloadable CVs
+
+# screenshots/  Portfolio screenshots used in this README
+
+# supabase/     Database schema, seed data, and admin SQL scripts
+
+# docs/         Setup and deployment documentation
+
+# ```
+
+# 
+
+# \## Professional Positioning
+
+# 
+
+# Ahmed Aziz Mhiri uses data, automation, and digital marketing to improve commercial performance, customer journeys, operational reliability, and business decisions.
+
+# 
+
+# \## License
+
+# 
+
+# This repository contains a personal professional portfolio. Reuse, reproduction, or redistribution of its content, visual identity, CVs, and project materials requires permission from the owner.
+
+
+
