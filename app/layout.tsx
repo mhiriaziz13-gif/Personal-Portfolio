@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 import { SiteChrome } from '@/components/site-chrome';
 import { getPortfolioContent } from '@/lib/cms';
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en">
       <body>
         <SiteChrome profile={profile}>{children}</SiteChrome>
+        <SpeedInsights />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </body>
     </html>
