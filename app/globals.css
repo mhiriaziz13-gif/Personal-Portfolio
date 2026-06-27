@@ -133,6 +133,7 @@ p { color: var(--ink-muted); }
 .project-industry { margin-bottom: 0.7rem; color: var(--amber); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .project-card h3 { font-size: 1.34rem; }
 .project-card p:not(.project-industry) { font-size: 0.92rem; }
+.project-context { display: -webkit-box; overflow: hidden; color: var(--ink-muted); -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
 .project-card .text-link { margin-top: auto; padding-top: 1.25rem; font-size: 0.9rem; }
 .tool-list { display: flex; flex-wrap: wrap; gap: 7px; margin: 0.65rem 0 0; }
 .tool-list span { display: inline-flex; padding: 0.26rem 0.48rem; border: 1px solid var(--line); border-radius: 5px; color: var(--ink-2); background: var(--surface-soft); font-size: 0.68rem; line-height: 1.25; font-weight: 700; }
@@ -224,7 +225,7 @@ code { padding: 0.13rem 0.34rem; border-radius: 4px; color: var(--ink); backgrou
 .contact-form { padding: clamp(22px, 4vw, 38px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-soft); }
 .form-note { font-size: 0.84rem; }.form-row { display: grid; gap: 0.35rem; margin-top: 1rem; }.form-row label { font-size: 0.88rem; font-weight: 800; }.form-row input, .form-row textarea { width: 100%; padding: 0.75rem 0.8rem; border: 1px solid #b9c8d3; border-radius: 8px; color: var(--ink); background: #fff; }.form-row textarea { resize: vertical; }.contact-form .button { margin-top: 1.3rem; }.form-status { min-height: 1.2em; margin: 0.7rem 0 0; font-size: 0.82rem; }
 
-/* case studies */
+/* project detail */
 .case-hero { padding: clamp(74px, 9vw, 130px) 0 clamp(54px, 7vw, 94px); background: var(--ink); color: #fff; }
 .case-hero-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(300px,0.52fr); gap: 8vw; align-items: center; }.case-hero .project-cover { height: 320px; border-radius: var(--radius-lg); box-shadow: 0 28px 50px rgba(0,0,0,0.2); }.case-hero .eyebrow { color: #f5b078; margin-top: 1.5rem; }.case-hero h1 { max-width: 740px; }.case-summary { max-width: 780px; color: rgba(255,255,255,0.72); font-size: 1.08rem; }.impact-line { max-width: 720px; color: #f5b078; font-size: 0.94rem; }.impact-line strong { color: #fff; }.back-link { color: #fff; font-size: 0.88rem; text-decoration-color: #f5b078; }
 .case-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(245px,0.34fr); gap: clamp(24px, 6vw, 84px); align-items: start; }.case-main h2 { font-size: clamp(1.8rem,3vw,2.8rem); }.case-aside { position: sticky; top: 96px; padding: 1.1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-soft); }.tool-list-stack { display: grid; }.tool-list-stack span { width: max-content; }.check-list { display: grid; gap: 1rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }.check-list li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 9px; align-items: start; color: var(--ink-muted); }.check-list svg { margin-top: 3px; color: var(--amber); }

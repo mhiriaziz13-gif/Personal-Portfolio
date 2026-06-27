@@ -479,7 +479,7 @@ def main() -> None:
         if child.suffix.lower() in {'.pdf', '.docx'}:
             child.unlink()
     create('Ahmed_Aziz_Mhiri_CV_English', make_english())
-    create('Ahmed_Aziz_Mhiri_CV_Français', make_french())
+    create('Ahmed_Aziz_Mhiri_CV_Francais', make_french())
     create('Ahmed_Aziz_Mhiri_CV_ATS', make_ats())
     create('Ahmed_Aziz_Mhiri_CV_Canada', make_canada())
     print('Generated CV files:')

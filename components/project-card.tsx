@@ -10,9 +10,10 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="project-card-body">
         <p className="project-industry">{project.industry}</p>
         <h3>{project.title}</h3>
+        <p className="project-context">{project.challenge}</p>
         <p>{project.impact}</p>
         <div className="tool-list" aria-label={`Tools used for ${project.title}`}>{project.tools.slice(0, 4).map((tool) => <span key={tool}>{tool}</span>)}</div>
-        <Link className="text-link" href={`/projects/${project.slug}`}>View Case Study <Icon name="arrow" /></Link>
+        <Link className="text-link" href={`/projects/${project.slug}`}>Read the Case Study <Icon name="arrow" /></Link>
       </div>
     </article>
   );

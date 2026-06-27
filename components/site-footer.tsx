@@ -8,9 +8,9 @@ export function SiteFooter({ profile }: { profile: Profile }) {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div>
-          <p className="eyebrow">Data, automation and commercial clarity.</p>
+          <p className="eyebrow">Data, automation and business operations.</p>
           <h2>{profile.tagline}</h2>
-          <p className="footer-copy">A portfolio focused on marketing analytics, commercial analytics, business intelligence, customer journeys and operational reliability.</p>
+          <p className="footer-copy">A portfolio focused on marketing data analysis, business intelligence, customer journeys, process automation and commercial operations.</p>
         </div>
         <div className="footer-links">
           <p className="footer-label">Navigate</p>

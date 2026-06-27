@@ -27,7 +27,7 @@ export function ContactForm() {
   }
 
   return <form className="contact-form" onSubmit={handleSubmit}>
-    <p className="form-note">Share the role, project context or collaboration topic. Please avoid confidential business information.</p>
+    <p className="form-note">Share the role, project context or professional topic. Please avoid confidential business information.</p>
     <div className="form-row"><label htmlFor="name">Name</label><input id="name" name="name" autoComplete="name" required maxLength={120} /></div>
     <div className="form-row"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required maxLength={254} /></div>
     <div className="form-row"><label htmlFor="message">Message</label><textarea id="message" name="message" rows={6} required minLength={8} maxLength={5000} /></div>

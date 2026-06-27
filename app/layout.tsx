@@ -11,11 +11,11 @@ const googleTagId = 'G-NXZE2F87JD';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: 'Ahmed Aziz Mhiri | Marketing Analytics, BI and Automation', template: '%s | Ahmed Aziz Mhiri' },
-  description: 'Portfolio of Ahmed Aziz Mhiri, focused on marketing analytics, commercial analytics, business intelligence, automation and digital growth.',
+  title: { default: 'Ahmed Aziz Mhiri | Marketing Data Analysis, BI and Automation', template: '%s | Ahmed Aziz Mhiri' },
+  description: 'Portfolio of Ahmed Aziz Mhiri, focused on marketing data analysis, business intelligence, process automation, commercial analytics and digital marketing.',
   icons: { icon: '/favicon.svg' },
-  openGraph: { type: 'website', locale: 'en_US', url: '/', title: 'Ahmed Aziz Mhiri | Marketing Analytics, BI and Automation', description: 'Data, automation and digital marketing applied to commercial performance, customer journeys and operational reliability.', images: [{ url: '/og-cover.svg', width: 1200, height: 630, alt: 'Ahmed Aziz Mhiri portfolio cover' }] },
-  twitter: { card: 'summary_large_image', title: 'Ahmed Aziz Mhiri', description: 'Marketing analytics, commercial analytics, business intelligence, automation and digital growth.' },
+  openGraph: { type: 'website', locale: 'en_US', url: '/', title: 'Ahmed Aziz Mhiri | Marketing Data Analysis, BI and Automation', description: 'Data, automation, marketing and operations work for clearer processes and better-informed commercial decisions.', images: [{ url: '/og-cover.svg', width: 1200, height: 630, alt: 'Ahmed Aziz Mhiri portfolio cover' }] },
+  twitter: { card: 'summary_large_image', title: 'Ahmed Aziz Mhiri', description: 'Marketing data analysis, business intelligence, commercial analytics, automation and digital marketing.' },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
