@@ -21,23 +21,39 @@ Available for Europe-based opportunities from Summer 2027.
 
 ### Projects
 
-![Projects page](./screenshots/projects.png)
-
-### Administration — Skills and Services
-
-![Skills and services administration page](./screenshots/services-admin.png)
-
-### Administration Login
-
-![Administration login page](./screenshots/admin-login.png)
+![Projects page](./screenshots/Projects.png)
 
 ### Resume and CV Download Centre
 
-![Resume and CV download centre](./screenshots/cv-centre.png)
+![Resume and CV download centre](./screenshots/Resume-center.png)
+
+### Administration Login
+
+![Administration login page](./screenshots/Sign-in-page.png)
+
+### Administration — Projects
+
+![Projects administration page](./screenshots/Projects-administration.png)
+
+### Administration — Skills & Services
+
+![Skills & Services administration page](./screenshots/Skills-management.png)
+
+### Administration — Resume
+
+![Resume administration page](./screenshots/Resume-management.png)
+
+### Administration — Experience
+
+![Experience administration page](./screenshots/Experience-management.png)
+
+### Administration — Education
+
+![Education administration page](./screenshots/Education-management.png)
 
 ### Contact Messages Inbox
 
-![Contact messages administration page](./screenshots/messages-admin.png)
+![Contact messages administration page](./screenshots/Contact-management.png)
 
 ## Main Features
 
