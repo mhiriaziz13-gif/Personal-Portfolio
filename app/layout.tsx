@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const nonce = (await headers()).get('x-nonce') || undefined;
   const { profile } = await getPortfolioContent();
   const schema = {
     '@context': 'https://schema.org',
@@ -45,8 +47,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <SiteChrome profile={profile}>{children}</SiteChrome>
         <SpeedInsights />
         <Analytics />
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`} strategy="afterInteractive" />
-        <Script id="google-tag" strategy="afterInteractive">
+        <Script nonce={nonce} src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`} strategy="afterInteractive" />
+        <Script nonce={nonce} id="google-tag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
@@ -54,7 +56,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             gtag('config', '${googleTagId}');
           `}
         </Script>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
+        <script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
       </body>
     </html>
   );

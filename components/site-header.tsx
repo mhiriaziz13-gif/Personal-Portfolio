@@ -27,7 +27,7 @@ export function SiteHeader({ profile }: { profile: Profile }) {
 
   return (
     <header className="site-header">
-      <div className="scroll-progress" style={{ transform: `scaleX(${progress / 100})` }} aria-hidden="true" />
+      <progress className="scroll-progress" value={progress} max={100} aria-hidden="true" />
       <div className="shell nav-wrap">
         <Link href="/" className="brand" aria-label={`${profile.name} home`}>
           <span className="brand-mark">AAM</span>

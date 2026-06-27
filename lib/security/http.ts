@@ -63,7 +63,7 @@ export function noStoreHeaders() {
     'Cache-Control': 'no-store, private, max-age=0',
     Pragma: 'no-cache',
     Expires: '0',
-    'X-Robots-Tag': 'noindex, nofollow',
+    'X-Robots-Tag': 'noindex, nofollow, noarchive',
   };
 }
 

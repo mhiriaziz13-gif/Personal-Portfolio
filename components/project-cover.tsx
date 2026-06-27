@@ -4,9 +4,9 @@ export function ProjectCover({ type, imageUrl }: { type: 'automation' | 'journey
     : type === 'journey'
       ? ['Discover', 'Visit', 'Book', 'Engage', 'Return']
       : ['Users', 'Interface', 'Services', 'Knowledge', 'Secure'];
-  const style = imageUrl ? { backgroundImage: `linear-gradient(135deg, rgba(9, 21, 36, 0.72), rgba(13, 27, 47, 0.35)), url(${JSON.stringify(imageUrl)})` } : undefined;
   return (
-    <div className={`project-cover cover-${type}${imageUrl ? ' project-cover-image' : ''}`} style={style} aria-hidden="true">
+    <div className={`project-cover cover-${type}${imageUrl ? ' project-cover-image' : ''}`} aria-hidden="true">
+      {imageUrl && <img className="project-cover-img" src={imageUrl} alt="" loading="lazy" decoding="async" />}
       <span className="cover-index">0{type === 'automation' ? '1' : type === 'journey' ? '2' : '3'}</span>
       <div className="cover-line" />
       <div className="cover-nodes">

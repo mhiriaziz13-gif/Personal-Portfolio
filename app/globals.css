@@ -48,7 +48,10 @@ p { color: var(--ink-muted); }
 
 /* navigation */
 .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(13, 27, 47, 0.08); background: rgba(255,255,255,0.91); backdrop-filter: blur(14px); }
-.scroll-progress { position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; background: var(--amber); transform-origin: left; }
+.scroll-progress { position: absolute; left: 0; bottom: -1px; width: 100%; height: 3px; appearance: none; border: 0; background: transparent; }
+.scroll-progress::-webkit-progress-bar { background: transparent; }
+.scroll-progress::-webkit-progress-value { background: var(--amber); }
+.scroll-progress::-moz-progress-bar { background: var(--amber); }
 .nav-wrap { min-height: 73px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; min-width: 0; font-weight: 800; letter-spacing: -0.03em; }
 .brand-mark { display: grid; place-items: center; width: 35px; height: 35px; flex: 0 0 35px; border-radius: 50%; color: white; background: var(--ink); font-size: 0.7rem; letter-spacing: -0.02em; }
@@ -138,6 +141,9 @@ p { color: var(--ink-muted); }
 .tool-list { display: flex; flex-wrap: wrap; gap: 7px; margin: 0.65rem 0 0; }
 .tool-list span { display: inline-flex; padding: 0.26rem 0.48rem; border: 1px solid var(--line); border-radius: 5px; color: var(--ink-2); background: var(--surface-soft); font-size: 0.68rem; line-height: 1.25; font-weight: 700; }
 .project-cover { position: relative; height: 210px; overflow: hidden; color: #fff; background: var(--ink); }
+.project-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.project-cover-image::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, rgba(9, 21, 36, 0.72), rgba(13, 27, 47, 0.35)); }
+.project-cover-image .cover-index, .project-cover-image .cover-line, .project-cover-image .cover-nodes, .project-cover-image .cover-pulse { z-index: 2; }
 .cover-journey { background: #1f537c; }
 .cover-architecture { background: #17283b; }
 .cover-index { position: absolute; left: 18px; top: 13px; color: rgba(255,255,255,0.45); font-size: 0.72rem; letter-spacing: 0.13em; font-weight: 800; }
@@ -257,7 +263,6 @@ code { padding: 0.13rem 0.34rem; border-radius: 4px; color: var(--ink); backgrou
 
 /* Private admin styles */
 .form-honeypot { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; }
-.project-cover-image { background-position: center; background-repeat: no-repeat; background-size: cover; }
 
 .admin-shell { min-height: 100vh; color: #dbe7f2; background: #081525; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 94px; padding: 20px clamp(20px, 4vw, 64px); border-bottom: 1px solid rgba(222,237,249,.13); background: #091a2d; }
