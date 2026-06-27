@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { FormEvent, Suspense, useState } from 'react';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
-import { createClient } from '@/lib/supabase/client';
+import { safeRedirectPath } from '@/lib/security/redirects';
+
+export const dynamic = 'force-dynamic';
 
 export default function AdminLoginPage() {
   return <Suspense fallback={<main className="admin-login"><div className="admin-login-card"><p>Loading secure sign-in...</p></div></main>}><AdminLoginForm /></Suspense>;
@@ -23,11 +25,16 @@ function AdminLoginForm() {
     setStatus('');
     setBusy(true);
     try {
-      const { error } = await createClient().auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      window.location.assign(params.get('next') || '/admin');
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, next: safeRedirectPath(params.get('next'), '/admin') }),
+      });
+      const result = await response.json() as { message?: string; redirectTo?: string };
+      if (!response.ok) throw new Error(result.message || 'Unable to sign in.');
+      window.location.assign(safeRedirectPath(result.redirectTo, '/admin'));
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : 'Unable to sign in.');
+      setStatus(error instanceof Error ? error.message : 'Unable to sign in with administrator access.');
     } finally { setBusy(false); }
   }
 

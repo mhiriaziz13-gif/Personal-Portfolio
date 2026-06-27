@@ -1,5 +1,11 @@
 export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 export const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+export const supabaseCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  path: '/',
+};
 
 export function isSupabaseConfigured() {
   return Boolean(supabaseUrl && supabasePublishableKey);

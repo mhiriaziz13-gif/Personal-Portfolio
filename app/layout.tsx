@@ -9,6 +9,15 @@ import { getPortfolioContent } from '@/lib/cms';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
 const googleTagId = 'G-NXZE2F87JD';
 
+function safeJsonLd(value: unknown) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: 'Ahmed Aziz Mhiri | Marketing Data Analysis, BI and Automation', template: '%s | Ahmed Aziz Mhiri' },
@@ -45,7 +54,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             gtag('config', '${googleTagId}');
           `}
         </Script>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
       </body>
     </html>
   );

@@ -23,6 +23,10 @@ NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 SUPABASE_SECRET_KEY=YOUR_SUPABASE_SECRET_KEY
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+REQUIRE_ADMIN_MFA=false
+ALLOWED_ORIGINS=http://localhost:3000
 ```
 
 Never commit `.env.local`. Never put `SUPABASE_SECRET_KEY` in a variable starting with `NEXT_PUBLIC_`.
@@ -37,6 +41,8 @@ Open **SQL Editor** in Supabase. Run these files in this exact order:
 `schema.sql` creates all content tables, the `portfolio-assets` storage bucket, row-level security policies and automatic `updated_at` timestamps.
 
 `seed.sql` adds the initial portfolio content. It intentionally does not create a login user.
+
+For an existing Supabase project that already ran an older `schema.sql`, also run `supabase/migrations/202606270001_security_hardening.sql` once. New projects get the same changes directly from the current `schema.sql`.
 
 ## 4. Create the administrator login
 

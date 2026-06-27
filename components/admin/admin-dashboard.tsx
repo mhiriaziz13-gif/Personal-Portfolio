@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useMemo, useState, type ReactNode } from 'react';
 import type { Certification, ContactMessage, Education, Experience, PortfolioContent, Profile, Project, Resume, SkillCluster, ValueCard } from '@/lib/cms-types';
-import { createClient } from '@/lib/supabase/client';
 
 type Tab = 'profile' | 'projects' | 'experience' | 'skills' | 'education' | 'cv' | 'messages';
 type Notice = { type: 'success' | 'error'; text: string } | null;
@@ -23,7 +22,12 @@ function linesToArray(value: string) {
 }
 function arrayToLines(value?: string[]) { return (value || []).join('\n'); }
 function slugify(value: string) { return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 90); }
-function fileName(value: string) { return value.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/-+/g, '-'); }
+
+async function readAdminResponse<T>(response: Response) {
+  const result = await response.json().catch(() => ({})) as { message?: string } & T;
+  if (!response.ok) throw new Error(result.message || 'Unable to complete the admin request.');
+  return result;
+}
 
 export function AdminDashboard({ initialContent, initialMessages, userEmail }: { initialContent: PortfolioContent; initialMessages: ContactMessage[]; userEmail: string }) {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
@@ -37,24 +41,29 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
     window.setTimeout(() => setNotice(null), 5000);
   }
 
-  async function uploadFile(file: File, folder: string) {
-    const supabase = createClient();
-    const path = `${folder}/${Date.now()}-${fileName(file.name)}`;
-    const { error } = await supabase.storage.from('portfolio-assets').upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type || undefined });
-    if (error) throw error;
-    const { data } = supabase.storage.from('portfolio-assets').getPublicUrl(path);
-    return data.publicUrl;
+  function reloadAdmin() {
+    window.location.reload();
+  }
+
+  async function adminRequest(payload: Record<string, unknown>) {
+    const response = await fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    return readAdminResponse<{ id?: string | null }>(response);
+  }
+
+  async function uploadFile(file: File, kind: 'portrait' | 'project-cover' | 'cv-pdf' | 'cv-docx') {
+    const form = new FormData();
+    form.set('kind', kind);
+    form.set('file', file);
+    const response = await fetch('/api/admin/upload', { method: 'POST', body: form });
+    return readAdminResponse<{ publicUrl: string; sizeLabel: string }>(response);
   }
 
   async function saveProfile(next: Profile, portraitFile?: File | null) {
     setBusy(true);
     try {
-      const portraitUrl = portraitFile ? await uploadFile(portraitFile, 'portraits') : next.portraitUrl;
-      const supabase = createClient();
-      const { error } = await supabase.from('site_profile').upsert({ id: 1, name: next.name, location: next.location, email: next.email, linkedin_url: next.linkedIn, headline: next.headline, homepage_title: next.homepageTitle, tagline: next.tagline, availability: next.availability, summary: next.summary, about_heading: next.aboutHeading, about_body: next.aboutBody, long_term_objective: next.longTermObjective, target_countries: next.targetCountries, portrait_url: portraitUrl });
-      if (error) throw error;
-      setContent((current) => ({ ...current, profile: { ...next, portraitUrl } }));
-      notify('success', 'Profile saved. Public pages now use this update.');
+      const portrait = portraitFile ? await uploadFile(portraitFile, 'portrait') : null;
+      await adminRequest({ action: 'save-profile', data: { ...next, portraitUrl: portrait?.publicUrl || next.portraitUrl } });
+      reloadAdmin();
     } catch (error) {
       notify('error', error instanceof Error ? error.message : 'Unable to save the profile.');
     } finally { setBusy(false); }
@@ -63,15 +72,9 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
   async function saveProject(next: Project, coverFile?: File | null) {
     setBusy(true);
     try {
-      const coverImageUrl = coverFile ? await uploadFile(coverFile, 'project-covers') : next.coverImageUrl || null;
-      const supabase = createClient();
-      const payload = { slug: next.slug, title: next.title, industry: next.industry, challenge: next.challenge, impact: next.impact, contributions: next.contributions, business_value: next.businessValue, workflow: next.workflow, tools: next.tools, cover: next.cover, cover_image_url: coverImageUrl, confidentiality: next.confidentiality || null, before_after: next.beforeAfter || null, sort_order: next.sortOrder || 100, is_published: true };
-      const query = next.id ? supabase.from('projects').update(payload).eq('id', next.id) : supabase.from('projects').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string, coverImageUrl };
-      setContent((current) => ({ ...current, projects: next.id ? current.projects.map((item) => item.id === next.id ? saved : item) : [...current.projects, saved].sort((a, b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Project updated.' : 'Project added.');
+      const cover = coverFile ? await uploadFile(coverFile, 'project-cover') : null;
+      await adminRequest({ action: 'save-project', data: { ...next, coverImageUrl: cover?.publicUrl || next.coverImageUrl || null } });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save the project.'); } finally { setBusy(false); }
   }
 
@@ -79,8 +82,7 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
     if (!window.confirm('Delete this project from the portfolio? This cannot be undone.')) return;
     setBusy(true);
     try {
-      const { error } = await createClient().from('projects').delete().eq('id', id);
-      if (error) throw error;
+      await adminRequest({ action: 'delete', entity: 'projects', id });
       setContent((current) => ({ ...current, projects: current.projects.filter((item) => item.id !== id) }));
       notify('success', 'Project deleted.');
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to delete the project.'); } finally { setBusy(false); }
@@ -89,14 +91,8 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
   async function saveExperience(next: Experience) {
     setBusy(true);
     try {
-      const payload = { organisation: next.organisation, role: next.role, date_label: next.dates, location: next.location, summary: next.summary, responsibilities: next.responsibilities, tools: next.tools || [], sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('experiences').update(payload).eq('id', next.id) : supabase.from('experiences').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string };
-      setContent((current) => ({ ...current, experiences: next.id ? current.experiences.map((item) => item.id === next.id ? saved : item) : [...current.experiences, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Experience updated.' : 'Experience added.');
+      await adminRequest({ action: 'save-experience', data: next });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save the experience.'); } finally { setBusy(false); }
   }
 
@@ -104,8 +100,7 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
     if (!window.confirm('Delete this experience entry?')) return;
     setBusy(true);
     try {
-      const { error } = await createClient().from('experiences').delete().eq('id', id);
-      if (error) throw error;
+      await adminRequest({ action: 'delete', entity: 'experiences', id });
       setContent((current) => ({ ...current, experiences: current.experiences.filter((item) => item.id !== id) }));
       notify('success', 'Experience deleted.');
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to delete the experience.'); } finally { setBusy(false); }
@@ -114,72 +109,42 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
   async function saveValueCard(next: ValueCard) {
     setBusy(true);
     try {
-      const payload = { kicker: next.kicker, title: next.title, body: next.body, detail: next.detail, sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('value_cards').update(payload).eq('id', next.id) : supabase.from('value_cards').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string };
-      setContent((current) => ({ ...current, valueCards: next.id ? current.valueCards.map((item) => item.id === next.id ? saved : item) : [...current.valueCards, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Service card updated.' : 'Service card added.');
+      await adminRequest({ action: 'save-value-card', data: next });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save the service card.'); } finally { setBusy(false); }
   }
 
   async function saveSkill(next: SkillCluster) {
     setBusy(true);
     try {
-      const payload = { title: next.title, items: next.items, sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('skill_clusters').update(payload).eq('id', next.id) : supabase.from('skill_clusters').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string };
-      setContent((current) => ({ ...current, skillClusters: next.id ? current.skillClusters.map((item) => item.id === next.id ? saved : item) : [...current.skillClusters, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Skill cluster updated.' : 'Skill cluster added.');
+      await adminRequest({ action: 'save-skill', data: next });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save the skill cluster.'); } finally { setBusy(false); }
   }
 
   async function saveEducation(next: Education) {
     setBusy(true);
     try {
-      const payload = { title: next.title, organisation: next.organisation, date_label: next.date, detail: next.detail, sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('education').update(payload).eq('id', next.id) : supabase.from('education').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string };
-      setContent((current) => ({ ...current, education: next.id ? current.education.map((item) => item.id === next.id ? saved : item) : [...current.education, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Education item updated.' : 'Education item added.');
+      await adminRequest({ action: 'save-education', data: next });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save education.'); } finally { setBusy(false); }
   }
 
   async function saveCertification(next: Certification) {
     setBusy(true);
     try {
-      const payload = { title: next.title, issuer: next.issuer, detail: next.detail, sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('certifications').update(payload).eq('id', next.id) : supabase.from('certifications').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string };
-      setContent((current) => ({ ...current, certifications: next.id ? current.certifications.map((item) => item.id === next.id ? saved : item) : [...current.certifications, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'Certification updated.' : 'Certification added.');
+      await adminRequest({ action: 'save-certification', data: next });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save certification.'); } finally { setBusy(false); }
   }
 
   async function saveResume(next: Resume, pdfFile?: File | null, docxFile?: File | null) {
     setBusy(true);
     try {
-      const pdf = pdfFile ? await uploadFile(pdfFile, 'cvs') : next.pdf;
-      const docx = docxFile ? await uploadFile(docxFile, 'cvs') : next.docx;
-      const payload = { title: next.title, language: next.language, intended_use: next.use, description: next.description, pdf_url: pdf, docx_url: docx, pdf_size: next.pdfSize, docx_size: next.docxSize, sort_order: next.sortOrder || 100, is_published: true };
-      const supabase = createClient();
-      const query = next.id ? supabase.from('resumes').update(payload).eq('id', next.id) : supabase.from('resumes').insert(payload);
-      const { data, error } = await query.select().single();
-      if (error) throw error;
-      const saved = { ...next, id: data.id as string, pdf, docx };
-      setContent((current) => ({ ...current, resumes: next.id ? current.resumes.map((item) => item.id === next.id ? saved : item) : [...current.resumes, saved].sort((a,b) => (a.sortOrder || 100) - (b.sortOrder || 100)) }));
-      notify('success', next.id ? 'CV links updated.' : 'CV entry added.');
+      const pdfUpload = pdfFile ? await uploadFile(pdfFile, 'cv-pdf') : null;
+      const docxUpload = docxFile ? await uploadFile(docxFile, 'cv-docx') : null;
+      await adminRequest({ action: 'save-resume', data: { ...next, pdf: pdfUpload?.publicUrl || next.pdf, docx: docxUpload?.publicUrl || next.docx, pdfSize: pdfUpload?.sizeLabel || next.pdfSize, docxSize: docxUpload?.sizeLabel || next.docxSize } });
+      reloadAdmin();
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to save CV details.'); } finally { setBusy(false); }
   }
 
@@ -187,8 +152,7 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
     if (!window.confirm('Delete this item?')) return;
     setBusy(true);
     try {
-      const { error } = await createClient().from(table).delete().eq('id', id);
-      if (error) throw error;
+      await adminRequest({ action: 'delete', entity: table, id });
       setContent((current) => ({ ...current, [type]: current[type].filter((item) => item.id !== id) }));
       notify('success', 'Item deleted.');
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to delete the item.'); } finally { setBusy(false); }
@@ -197,8 +161,7 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
   async function markMessage(id: string, isRead: boolean) {
     setBusy(true);
     try {
-      const { error } = await createClient().from('contact_messages').update({ is_read: isRead }).eq('id', id);
-      if (error) throw error;
+      await adminRequest({ action: 'mark-message', id, isRead });
       setMessages((current) => current.map((item) => item.id === id ? { ...item, is_read: isRead } : item));
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to update message.'); } finally { setBusy(false); }
   }
@@ -207,21 +170,21 @@ export function AdminDashboard({ initialContent, initialMessages, userEmail }: {
     if (!window.confirm('Delete this message?')) return;
     setBusy(true);
     try {
-      const { error } = await createClient().from('contact_messages').delete().eq('id', id);
-      if (error) throw error;
+      await adminRequest({ action: 'delete', entity: 'contact_messages', id });
       setMessages((current) => current.filter((item) => item.id !== id));
     } catch (error) { notify('error', error instanceof Error ? error.message : 'Unable to delete message.'); } finally { setBusy(false); }
   }
 
   async function signOut() {
-    await createClient().auth.signOut();
-    window.location.assign('/admin/login');
+    const response = await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ redirectTo: '/admin/login' }) });
+    const result = await readAdminResponse<{ redirectTo: string }>(response);
+    window.location.assign(result.redirectTo || '/admin/login');
   }
 
   const unreadCount = useMemo(() => messages.filter((message) => !message.is_read).length, [messages]);
 
   return <div className="admin-shell">
-    <header className="admin-header"><div><Link className="admin-brand" href="/">AAM <span>Portfolio Manager</span></Link><p>Private administration for the portfolio</p></div><div className="admin-header-actions"><span className="admin-user">{userEmail}</span><Link className="button button-secondary" href="/" target="_blank">View site</Link><button className="button button-primary" onClick={signOut}>Sign out</button></div></header>
+    <header className="admin-header"><div><Link className="admin-brand" href="/">AAM <span>Portfolio Manager</span></Link><p>Private administration for the portfolio</p></div><div className="admin-header-actions"><span className="admin-user">{userEmail}</span><Link className="button button-secondary" href="/admin/security">Security</Link><Link className="button button-secondary" href="/" target="_blank">View site</Link><button className="button button-primary" onClick={signOut}>Sign out</button></div></header>
     <div className="admin-layout"><aside className="admin-nav" aria-label="Content sections">{tabs.map((tab) => <button key={tab.id} type="button" className={activeTab === tab.id ? 'admin-tab active' : 'admin-tab'} onClick={() => setActiveTab(tab.id)}>{tab.label}{tab.id === 'messages' && unreadCount > 0 && <span>{unreadCount}</span>}</button>)}</aside><main className="admin-main">{notice && <div className={`admin-notice ${notice.type}`}>{notice.text}</div>}{busy && <div className="admin-busy" aria-live="polite">Saving...</div>}
       {activeTab === 'profile' && <ProfileEditor profile={content.profile} onSave={saveProfile} busy={busy} />}
       {activeTab === 'projects' && <ProjectManager items={content.projects} onSave={saveProject} onDelete={deleteProject} busy={busy} />}

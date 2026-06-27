@@ -105,7 +105,9 @@ Create a `.env.local` file in the project root:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+SUPABASE_SECRET_KEY=
+REQUIRE_ADMIN_MFA=false
 ```
 
 Never publish `.env.local` or any Supabase secret key on GitHub.
@@ -179,10 +181,11 @@ This project requires a dynamic Next.js deployment. Do not deploy it as a static
 ## Security Notes
 
 * Never commit `.env.local`.
-* Never expose `SUPABASE_SERVICE_ROLE_KEY` in client-side code.
+* Never expose `SUPABASE_SECRET_KEY` in client-side code.
 * Keep Supabase Row Level Security enabled.
 * Only approved administrators should have editing access.
 * Regularly review contact messages and uploaded files.
+* Review `docs/SECURITY_HARDENING_AUDIT.md`, `docs/PRODUCTION_SECURITY_CHECKLIST.md`, and `docs/SECURITY_REGRESSION_TESTS.md` before production deployment.
 
 ## Repository Structure
 

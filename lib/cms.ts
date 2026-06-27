@@ -2,6 +2,7 @@ import { certification, education, person, skillClusters, valueCards } from '@/d
 import { experiences } from '@/data/experience';
 import { projects } from '@/data/projects';
 import { resumes } from '@/data/resumes';
+import { getVerifiedAdmin, isVerifiedAdmin } from '@/lib/security/admin-auth';
 import type { Certification, ContactMessage, Education, Experience, PortfolioContent, Profile, Project, Resume, SkillCluster, ValueCard } from './cms-types';
 import { isSupabaseConfigured } from './supabase/config';
 import { createClient } from './supabase/server';
@@ -134,6 +135,7 @@ export async function getPortfolioContent() {
 }
 
 export async function getAdminPortfolioContent() {
+  await getVerifiedAdmin();
   return loadContent(true);
 }
 
@@ -145,6 +147,7 @@ export async function getProjectFromCMS(slug: string) {
 export async function getAdminMessages(): Promise<ContactMessage[]> {
   if (!isSupabaseConfigured()) return [];
   try {
+    await getVerifiedAdmin();
     const supabase = await createClient();
     const { data, error } = await supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
     if (error || !data) return [];
@@ -156,13 +159,5 @@ export async function getAdminMessages(): Promise<ContactMessage[]> {
 
 export async function isCurrentUserAdmin() {
   if (!isSupabaseConfigured()) return false;
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
-    const { data } = await supabase.from('admins').select('user_id').eq('user_id', user.id).maybeSingle();
-    return Boolean(data);
-  } catch {
-    return false;
-  }
+  return isVerifiedAdmin();
 }

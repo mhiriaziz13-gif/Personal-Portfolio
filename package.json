@@ -6,6 +6,7 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "lint": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "generate:cvs": "python3 scripts/generate_cvs.py",
     "preview": "next start",
     "start": "next start",
